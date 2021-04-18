@@ -1,8 +1,7 @@
 import React from "react";
-import Image from "next/image";
 import firebase from "firebase/app";
 
-import initFirebase from "../services/firebaseAuth";
+import initFirebase from "../../services/firebaseAuth";
 
 initFirebase();
 
@@ -27,17 +26,15 @@ export default function Login() {
     }
   };
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen flex items-center justify-center bg-green-600 py-12 px-4 sm:px-6 lg:px-8 ">
       <div className="flex-1 max-w-md w-full space-y-8 ">
         <div className="flex flex-col items-center justify-center ">
           <div>
-            <Image src={`/PREVLAB.png`} width={175} height={100} />
-          </div>
-          <div>
-            <h2 className="mt-6 text-center text-3xl font-extrabold text-green-800 ">
-              Sign in to your account
+            <h2 className="text-7xl text-white font-semibold tracking-wide ">
+              Prev<span className="text-7xl  font-thin">Lab</span>
             </h2>
           </div>
+          <p className="text-white font-semibold">{`< Admin />`}</p>
         </div>
         <form className="mt-8 space-y-6" action="#" method="POST">
           <input type="hidden" name="remember" value="true" />
@@ -53,10 +50,11 @@ export default function Login() {
                 type="email"
                 autoComplete="email"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                className="relative block w-full px-3 py-4 border border-transparent bg-green-700 placeholder-white text-white rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-green-800 focus:z-10 sm:text-sm"
                 placeholder="Email address"
               />
             </div>
+            <br />
             <div>
               <label htmlFor="password" className="sr-only">
                 Password
@@ -69,42 +67,16 @@ export default function Login() {
                 type="password"
                 autoComplete="current-password"
                 required
-                className="appearance-none rounded-none relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                className="relative block w-full px-3 py-4 border border-transparent bg-green-700 placeholder-white text-white rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-green-800 focus:z-10 sm:text-sm"
                 placeholder="Password"
               />
-            </div>
-          </div>
-
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <input
-                id="remember_me"
-                name="remember_me"
-                type="checkbox"
-                className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded"
-              />
-              <label
-                htmlFor="remember_me"
-                className="ml-2 block text-sm text-gray-900"
-              >
-                Remember me
-              </label>
-            </div>
-
-            <div className="text-sm">
-              <a
-                href="#"
-                className="font-medium text-green-600 hover:text-green-500"
-              >
-                Forgot your password?
-              </a>
             </div>
           </div>
 
           <div>
             <button
               onClick={handleLogin}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-green-800 hover:bg-green-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
               <span className="absolute left-0 inset-y-0 flex items-center pl-3">
                 <svg
@@ -125,9 +97,17 @@ export default function Login() {
             </button>
           </div>
         </form>
-        <div className="text-sm ">
-          <a href="prevlab/admin/login" className="font-medium text-green-600 ">
-            Logar como administrador.
+        <div className="text-sm">
+          <a href="/login" className="font-medium text-white ">
+            Logar como usuário.
+          </a>
+        </div>
+        <div className="text-sm">
+          <a
+            href="/prevlab/admin/dashboard"
+            className="font-medium text-white "
+          >
+            Dashboard.
           </a>
         </div>
       </div>

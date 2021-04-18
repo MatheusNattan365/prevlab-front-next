@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <div>
       <Head>
-        <title>PrevLab</title>
+        <title>PrevLab </title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
