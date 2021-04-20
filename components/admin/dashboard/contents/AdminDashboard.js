@@ -1,6 +1,6 @@
 import React from "react";
 
-import TimeLine from "./components/timeLine";
+import TimeLine from "./components/TimeLine";
 
 function AdminDashboard() {
   return (
