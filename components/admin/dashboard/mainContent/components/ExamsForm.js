@@ -113,10 +113,10 @@ function ExamsForm() {
                       <input
                         name={`company_dominante`}
                         id={`company_dominante`}
-                        list="descDominante"
+                        list="naoEpiteliais"
                         class="w-full border bg-white rounded px-3 py-2 h-10 outline-none"
                       />
-                      <datalist id="descDominante">
+                      <datalist id="naoEpiteliais">
                         <option value="Pouquíssimos polimorfonucleares neutrófilos" />
                         <option value="Poucos polimorfonucleares neutrófilos" />
                         <option value="Poucos polimorfonucleares neutrófilos e histiócitos" />

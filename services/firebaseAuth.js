@@ -1,16 +1,17 @@
-import firebase from "firebase/app";
-import "firebase/auth";
+// import firebase from "firebase/app";
+// import "firebase/auth";
 
-const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FB_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FB_AUTH_DOMAIN,
-  databaseURL: process.env.NEXT_PUBLIC_FB_DATABASE_URL,
-  projectId: process.env.NEXT_PUBLIC_FB_PROJECT_ID,
-};
+// const firebaseConfig = {
+//   apiKey: process.env.NEXT_PUBLIC_FB_API_KEY,
+//   authDomain: process.env.NEXT_PUBLIC_FB_AUTH_DOMAIN,
+//   projectId: process.env.NEXT_PUBLIC_FB_PROJECT_ID,
+//   projectId: "prevlab2-762db",
+//   storageBucket: "prevlab2-762db.appspot.com",
+// };
 
-export default function initFirebase() {
-  console.log(process.env.NEXT_PUBLIC_FB_API_KEYFB_API_KEY);
-  if (!firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig);
-  }
-}
+// export default function initFirebase() {
+//   if (!firebase.apps.length) {
+//     firebase.initializeApp(firebaseConfig);
+//     firebase.firestore();
+//   }
+// }

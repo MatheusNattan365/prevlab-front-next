@@ -16,14 +16,14 @@ export default function Login() {
       await firebase
         .auth()
         .signInWithEmailAndPassword(email.current.value, password.current.value)
-        .then((userCredential) => alert(userCredential))
+        .then((userCredential) => console.log(userCredential))
         .catch((err) => alert(err.message));
 
       const { user, credencials } = loginResult;
 
       if (!user) return alert("Usuário ou senha inválido!");
     } catch (error) {
-      //   console.log(error);
+      console.log(error);
     }
   };
   return (

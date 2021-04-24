@@ -4,10 +4,16 @@ import { useRouter } from "next/router";
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Profile as ProfileSVG } from "../../svgs";
-
+import firebase from "firebase/app";
 import { AdminDashboardContext } from "../../../context/adminContext";
 
-const navigation = ["Dashboard", "Pacientes", "Exames", "Relatórios"];
+const navigation = [
+  "Dashboard",
+  "Labs/Convênios",
+  "Pacientes",
+  "Exames",
+  "Relatórios",
+];
 const profile = ["Your Profile", "Settings", "Sign out"];
 
 function classNames(...classes) {
@@ -20,7 +26,12 @@ function Navbar() {
     AdminDashboardContext
   );
 
-  const singOut = () => router.push("/");
+  const singOut = () => {
+    firebase
+      .auth()
+      .signOut()
+      .then((res) => router.push("/"));
+  };
 
   const profileActions = async (actionType) => {
     switch (actionType) {

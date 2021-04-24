@@ -1,11 +1,11 @@
 import React from "react";
 
-import { AdminDashboardContext } from "../../../context/adminContext";
+import { AdminDashboardContext } from "../../../../context/adminContext";
 
-import AdminDashboard from "./contents/AdminDashboard";
-import AdminPacients from "./contents/AdminPacients";
-import AdminExams from "./contents/AdminExams";
-import AdminReports from "./contents/AdminReports";
+import AdminDashboard from "./AdminDashboard";
+import AdminPacients from "./AdminPacients";
+import AdminExams from "./AdminExams";
+import AdminReports from "./AdminReports";
 
 function Header() {
   const [adminDashContext] = React.useContext(AdminDashboardContext);
