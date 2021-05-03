@@ -1,10 +1,10 @@
 import React from "react";
 import { useRouter } from "next/router";
+import { useCookies } from "react-cookie";
 
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Profile as ProfileSVG } from "../../svgs";
-import firebase from "firebase/app";
 import { AdminDashboardContext } from "../../../context/adminContext";
 
 const navigation = [
@@ -25,18 +25,17 @@ function Navbar() {
   const [adminDashContext, setAdminDashContext] = React.useContext(
     AdminDashboardContext
   );
+  const [cookies, setCookie, removeCookie] = useCookies();
 
   const singOut = () => {
-    firebase
-      .auth()
-      .signOut()
-      .then((res) => router.push("/"));
+    removeCookie("userInfo");
+    return router.push("/");
   };
 
   const profileActions = async (actionType) => {
     switch (actionType) {
       case "Sign out":
-        return await singOut();
+        return singOut();
 
       default:
         break;
@@ -63,7 +62,7 @@ function Navbar() {
                 <div className="hidden md:block">
                   <div className="ml-10 flex items-baseline space-x-4">
                     {navigation.map((item, itemIdx) =>
-                      itemIdx === 0 ? (
+                      item === adminDashContext.app ? (
                         <Fragment key={item}>
                           {/* Current: "bg-green-900 text-white", Default: "text-green-300 hover:bg-green-700 hover:text-white" */}
                           <button

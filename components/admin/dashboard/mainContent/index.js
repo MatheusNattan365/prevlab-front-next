@@ -6,6 +6,7 @@ import AdminDashboard from "./AdminDashboard";
 import AdminPacients from "./AdminPacients";
 import AdminExams from "./AdminExams";
 import AdminReports from "./AdminReports";
+import AdminLabs from "./AdminLabs";
 
 function Header() {
   const [adminDashContext] = React.useContext(AdminDashboardContext);
@@ -14,6 +15,8 @@ function Header() {
     switch (appTitle) {
       case "Dashboard":
         return <AdminDashboard />;
+      case "Labs/Convênios":
+        return <AdminLabs />;
       case "Pacientes":
         return <AdminPacients />;
       case "Exames":

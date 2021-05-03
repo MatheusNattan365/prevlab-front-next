@@ -1,38 +1,27 @@
 import React from "react";
 import { useRouter } from "next/router";
-// import firebase from "firebase/app";
-import { firebase as fb } from "../../../services/firebaseConfig";
-import initFirebase from "../../../services/firebaseAuth";
+import { useCookies } from "react-cookie";
 
-// initFirebase();
-
+import { prevlabAxiosInstace } from "../../../services/prevlabAxios";
 export default function Login() {
   const router = useRouter();
   const email = React.useRef(null);
   const password = React.useRef(null);
+  const [cookies, setCookie, removeCookie] = useCookies();
 
   const handleLogin = async (evt) => {
     evt.preventDefault();
     try {
-      // console.log(initFirebase);
-      await fb
-        .firestore()
-        .collection("users")
-        .doc("4zT4ZRUEHMSqa8Xx6lCQCqdPvDq2")
-        .get()
-        .then((doc) => console.log(doc));
-      // await firebase
-      //   .auth()
-      //   .signInWithEmailAndPassword(email.current.value, password.current.value)
-      //   .then((userCredential) => {
-      //     // const { user } = userCredential;
-      //     // alert("Usuário ou senha inválido. ");
-      //   })
-      //   .catch((err) => alert("Usuário ou senha inválido. " + err.message));
-
-      // const { user, credencials } = loginResult;
-
-      if (!user) return alert("Usuário ou senha inválido!");
+      const loginResponse = await prevlabAxiosInstace.auth._login(
+        email.current.value,
+        password.current.value
+      );
+      if (!loginResponse.data.data) {
+        alert("Usuário ou senha inválido!");
+        return;
+      }
+      setCookie("userInfo", loginResponse.data.data);
+      return router.push("/prevlab/admin/dashboard");
     } catch (error) {
       console.log(error);
     }
@@ -109,19 +98,6 @@ export default function Login() {
             </button>
           </div>
         </form>
-        <div className="text-sm">
-          <a href="/login" className="font-medium text-white ">
-            Logar como usuário.
-          </a>
-        </div>
-        <div className="text-sm">
-          <a
-            href="/prevlab/admin/dashboard"
-            className="font-medium text-white "
-          >
-            Dashboard.
-          </a>
-        </div>
       </div>
     </div>
   );

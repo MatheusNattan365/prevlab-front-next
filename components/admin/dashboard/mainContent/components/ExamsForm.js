@@ -1,41 +1,54 @@
 import React from "react";
-
-// import { Container } from './styles';
+import { useCookies } from "react-cookie";
+import PatientTable from "./tables/PatientsTable";
+import { prevlabAxiosInstace } from "../../../../../services/prevlabAxios";
+import LoadingBackdrop from "../../../../LoadingBackdrop";
 
 function ExamsForm() {
-  const handleSubmit = (inputRef) => {
-    switch (inputRef) {
-      case "nomeCompleto":
-        return console.log("nomeCompleto");
-      case "solicitante":
-        return console.log("solicitante");
-      case "convenio":
-        return console.log("convenio");
+  const [cookies] = useCookies();
+  const [loading, setLoading] = React.useState(false);
+  const [openBackdropTable, setOpenBackdropTable] = React.useState(false);
+  const [patient, setPatient] = React.useState({
+    fullName: "",
+    _id: "",
+  });
+  const [exam, setExam] = React.useState({
+    pacient_id: patient._id,
+    collectDate: "",
+    avaliacaoDaAmostra: "",
+    celulaNaoEpiteliais: "",
+    descamacaoDominante: "",
+    alteracoesCelulares: "",
+    celulasMetaplasicas: "",
+    celulasEndocervicais: "",
+    celulasEndometriais: "",
+    floraVaginal: "",
+    agentesEspecificos: "",
+    citolise: "",
+    conclusao: "",
+    observacoes: "",
+  });
+
+  const resetFields = () => {
+    setPatient({
+      fullName: "",
+      _id: "",
+    });
+  };
+  const saveExam = async () => {
+    if (!patient._id || !exam.conclusao || !exam.collectDate) {
+      return;
     }
+    // const response = await prevlabAxiosInstace.
   };
 
-  const Input = ({ label, inputRef }) => (
-    <div className="col-span-3 sm:col-span-2">
-      <label
-        htmlFor="company_website"
-        className="block text-sm font-medium text-gray-700"
-      >
-        {label}
-      </label>
-      <div className="mt-1 flex rounded-md shadow-sm ">
-        <input
-          type="text"
-          name={`company_${label}`}
-          id={`company_${label}`}
-          onChange={() => handleSubmit(inputRef)}
-          className="border border-gray-500 p-2 flex-1 block w-full h-10  rounded-r-md sm:text-sm  "
-          placeholder="..."
-        />
-      </div>
-    </div>
-  );
   return (
     <>
+      <PatientTable
+        setPatient={setPatient}
+        openBackdropTable={openBackdropTable}
+        setOpenBackdropTable={setOpenBackdropTable}
+      />
       <div>
         <div className="md:grid md:grid-cols-3 md:gap-6">
           <div className="md:col-span-1">
@@ -50,10 +63,25 @@ function ExamsForm() {
             </div>
           </div>
           <div className="mt-5 md:mt-0 md:col-span-2">
-            <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
-              <button className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
-                Selecionar paciente
-              </button>
+            <div className="flex flex-row justify-between  px-4 py-3 bg-gray-50 text-right sm:px-6">
+              <div className="flex-col">
+                <h3 className=" flex text-lg self-start font-medium leading-6 text-gray-900">
+                  Paciente: {patient.fullName}
+                </h3>
+                <p className="flex self-start mt-1 text-sm text-gray-600">
+                  Paciente ID: {patient._id}
+                </p>
+              </div>
+              <div className="flex-col">
+                {!patient._id ? (
+                  <button
+                    onClick={() => setOpenBackdropTable(true)}
+                    className="inline-flex justify-center  py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                  >
+                    Selecionar paciente
+                  </button>
+                ) : null}
+              </div>
             </div>
             <form action="#" method="POST">
               <div className="shadow sm:rounded-md sm:overflow-hidden">
@@ -70,7 +98,10 @@ function ExamsForm() {
                         type="date"
                         name={`company_date`}
                         id={`company_date`}
-                        // onChange={() => handleSubmit(inputRef)}
+                        value={exam.collectDate.split("T")[0]}
+                        onChange={(evt) =>
+                          setExam({ ...exam, collectDate: evt.target.value })
+                        }
                         className="border border-gray-500 p-2 flex-1 block w-full h-10  rounded-r-md sm:text-sm  "
                         placeholder="..."
                       />
@@ -88,6 +119,13 @@ function ExamsForm() {
                       <input
                         name={`company_amostra`}
                         id={`company_amostra`}
+                        value={exam.avaliacaoDaAmostra}
+                        onChange={(evt) =>
+                          setExam({
+                            ...exam,
+                            avaliacaoDaAmostra: evt.target.value,
+                          })
+                        }
                         list="avaliacaoAmostra"
                         class="w-full border bg-white rounded px-3 py-2 h-10 outline-none"
                       />
@@ -111,8 +149,15 @@ function ExamsForm() {
                     </label>
                     <div className="mt-1 flex rounded-md shadow-sm ">
                       <input
-                        name={`company_dominante`}
-                        id={`company_dominante`}
+                        name={`company_celulaNaoEpiteliais`}
+                        id={`company_celulaNaoEpiteliais`}
+                        value={exam.celulaNaoEpiteliais}
+                        onChange={(evt) =>
+                          setExam({
+                            ...exam,
+                            celulaNaoEpiteliais: evt.target.value,
+                          })
+                        }
                         list="naoEpiteliais"
                         class="w-full border bg-white rounded px-3 py-2 h-10 outline-none"
                       />
@@ -138,8 +183,15 @@ function ExamsForm() {
                     </label>
                     <div className="mt-1 flex rounded-md shadow-sm ">
                       <input
-                        name={`company_dominante`}
-                        id={`company_dominante`}
+                        name={`company_descamacaoDominante`}
+                        id={`company_descamacaoDominante`}
+                        value={exam.descamacaoDominante}
+                        onChange={(evt) =>
+                          setExam({
+                            ...exam,
+                            descamacaoDominante: evt.target.value,
+                          })
+                        }
                         list="descDominante"
                         class="w-full border bg-white rounded px-3 py-2 h-10 outline-none"
                       />
@@ -167,6 +219,13 @@ function ExamsForm() {
                       <input
                         name={`company_alteracoes`}
                         id={`company_alteracoes`}
+                        value={exam.alteracoesCelulares}
+                        onChange={(evt) =>
+                          setExam({
+                            ...exam,
+                            alteracoesCelulares: evt.target.value,
+                          })
+                        }
                         list="alteracoesCelulares"
                         class="w-full border bg-white rounded px-3 py-2 h-10 outline-none"
                       />
@@ -187,6 +246,13 @@ function ExamsForm() {
                       <input
                         name={`company_metaplasicas`}
                         id={`company_metaplasicas`}
+                        value={exam.celulasMetaplasicas}
+                        onChange={(evt) =>
+                          setExam({
+                            ...exam,
+                            celulasMetaplasicas: evt.target.value,
+                          })
+                        }
                         list="celulasMetaplasicas"
                         class="w-full border bg-white rounded px-3 py-2 h-10 outline-none"
                       />
@@ -209,6 +275,13 @@ function ExamsForm() {
                       <input
                         name={`company_endocervicais`}
                         id={`company_endocervicais`}
+                        value={exam.celulasEndocervicais}
+                        onChange={(evt) =>
+                          setExam({
+                            ...exam,
+                            celulasEndocervicais: evt.target.value,
+                          })
+                        }
                         list="celulasEndocervicais"
                         class="w-full border bg-white rounded px-3 py-2 h-10 outline-none"
                       />
@@ -234,6 +307,13 @@ function ExamsForm() {
                       <input
                         name={`company_endometriais`}
                         id={`company_endometriais`}
+                        value={exam.celulasEndometriais}
+                        onChange={(evt) =>
+                          setExam({
+                            ...exam,
+                            celulasEndometriais: evt.target.value,
+                          })
+                        }
                         list="celulasEndometriais"
                         class="w-full border bg-white rounded px-3 py-2 h-10 outline-none"
                       />
@@ -254,6 +334,13 @@ function ExamsForm() {
                       <input
                         name={`company_flora`}
                         id={`company_flora`}
+                        value={exam.floraVaginal}
+                        onChange={(evt) =>
+                          setExam({
+                            ...exam,
+                            floraVaginal: evt.target.value,
+                          })
+                        }
                         list="floraVaginal"
                         class="w-full border bg-white rounded px-3 py-2 h-10 outline-none"
                       />
@@ -282,6 +369,13 @@ function ExamsForm() {
                       <input
                         name={`company_especificos`}
                         id={`company_especificos`}
+                        value={exam.agentesEspecificos}
+                        onChange={(evt) =>
+                          setExam({
+                            ...exam,
+                            agentesEspecificos: evt.target.value,
+                          })
+                        }
                         list="agentesEspecificos"
                         class="w-full border bg-white rounded px-3 py-2 h-10 outline-none"
                       />
@@ -303,6 +397,13 @@ function ExamsForm() {
                       <input
                         name={`company_citolise`}
                         id={`company_citolise`}
+                        value={exam.citolise}
+                        onChange={(evt) =>
+                          setExam({
+                            ...exam,
+                            citolise: evt.target.value,
+                          })
+                        }
                         list="citolise"
                         class="w-full border bg-white rounded px-3 py-2 h-10 outline-none"
                       />
@@ -325,6 +426,13 @@ function ExamsForm() {
                       <input
                         name={`company_conclusao`}
                         id={`company_conclusao`}
+                        value={exam.conclusao}
+                        onChange={(evt) =>
+                          setExam({
+                            ...exam,
+                            conclusao: evt.target.value,
+                          })
+                        }
                         list="conclusao"
                         class="w-full border bg-white rounded px-3 py-2 h-10 outline-none"
                       />
@@ -349,6 +457,13 @@ function ExamsForm() {
                       <input
                         name={`company_observacoes`}
                         id={`company_observacoes`}
+                        value={exam.observacoes}
+                        onChange={(evt) =>
+                          setExam({
+                            ...exam,
+                            observacoes: evt.target.value,
+                          })
+                        }
                         list="observacoes"
                         class="w-full border bg-white rounded px-3 py-2 h-10 outline-none"
                       />
@@ -364,10 +479,14 @@ function ExamsForm() {
               </div>
             </form>
             <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
-              <button className="mr-2 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-green-600 hover:text-white bg-white border-green-500 hover:border-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+              <button
+                onClick={resetFields}
+                className="mr-2 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-green-600 hover:text-white bg-white border-green-500 hover:border-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+              >
                 Reset
               </button>
               <button
+                onClick={saveExam}
                 type="submit"
                 className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
               >

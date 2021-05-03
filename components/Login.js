@@ -1,27 +1,27 @@
 import React from "react";
 import Image from "next/image";
-import firebase from "firebase/app";
-
-import initFirebase from "../services/firebaseAuth";
-
-initFirebase();
-
+import { useRouter } from "next/router";
+import { useCookies } from "react-cookie";
+import { prevlabAxiosInstace } from "../services/prevlabAxios";
 export default function Login() {
   const email = React.useRef(null);
   const password = React.useRef(null);
+  const router = useRouter();
+  const [cookies, setCookie, removeCookie] = useCookies();
 
   const handleLogin = async (evt) => {
     evt.preventDefault();
     try {
-      await firebase
-        .auth()
-        .signInWithEmailAndPassword(email.current.value, password.current.value)
-        .then((userCredential) => console.log(userCredential))
-        .catch((err) => alert(err.message));
-
-      const { user, credencials } = loginResult;
-
-      if (!user) return alert("Usuário ou senha inválido!");
+      const loginResponse = await prevlabAxiosInstace._login(
+        email.current.value,
+        password.current.value
+      );
+      if (!loginResponse.data.data) {
+        alert("Usuário ou senha inválido!");
+        return;
+      }
+      setCookie("userInfo", loginResponse.data.data);
+      return router.push("prevlab/users/dashboard");
     } catch (error) {
       console.log(error);
     }
