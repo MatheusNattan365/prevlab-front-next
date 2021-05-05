@@ -3,23 +3,37 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { useCookies } from "react-cookie";
 import { prevlabAxiosInstace } from "../services/prevlabAxios";
+import FeedBack from "../components/FeedBack";
 export default function Login() {
   const email = React.useRef(null);
   const password = React.useRef(null);
   const router = useRouter();
   const [cookies, setCookie, removeCookie] = useCookies();
+  const [feedback, setFeedback] = React.useState({
+    open: false,
+    type: "success",
+    msg: "feedback",
+  });
 
   const handleLogin = async (evt) => {
     evt.preventDefault();
     try {
-      const loginResponse = await prevlabAxiosInstace._login(
+      const loginResponse = await prevlabAxiosInstace.auth._login(
         email.current.value,
         password.current.value
       );
-      if (!loginResponse.data.data) {
-        alert("Usuário ou senha inválido!");
-        return;
+      if (loginResponse.data.error) {
+        return setFeedback({
+          open: true,
+          type: "error",
+          msg: loginResponse.data.msg,
+        });
       }
+      setFeedback({
+        open: true,
+        type: "success",
+        msg: "Bem vindo!",
+      });
       setCookie("userInfo", loginResponse.data.data);
       return router.push("prevlab/users/dashboard");
     } catch (error) {
@@ -28,6 +42,7 @@ export default function Login() {
   };
   return (
     <div className="min-h-screen flex items-center justify-center bg-white py-12 px-4 sm:px-6 lg:px-8">
+      <FeedBack obj={feedback} close={setFeedback} />
       <div className="flex-1 max-w-md w-full space-y-8 ">
         <div className="flex flex-col items-center justify-center ">
           <div>
@@ -35,7 +50,7 @@ export default function Login() {
           </div>
           <div>
             <h2 className="mt-6 text-center text-3xl font-extrabold text-green-800 ">
-              Sign in to your account
+              Entre com sua conta
             </h2>
           </div>
         </div>
@@ -44,7 +59,7 @@ export default function Login() {
           <div className="rounded-md shadow-sm -space-y-px">
             <div>
               <label htmlFor="email-address" className="sr-only">
-                Email address
+                Email
               </label>
               <input
                 ref={email}
@@ -59,7 +74,7 @@ export default function Login() {
             </div>
             <div>
               <label htmlFor="password" className="sr-only">
-                Password
+                Senha
               </label>
 
               <input
@@ -75,31 +90,7 @@ export default function Login() {
             </div>
           </div>
 
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <input
-                id="remember_me"
-                name="remember_me"
-                type="checkbox"
-                className="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded"
-              />
-              <label
-                htmlFor="remember_me"
-                className="ml-2 block text-sm text-gray-900"
-              >
-                Remember me
-              </label>
-            </div>
-
-            <div className="text-sm">
-              <a
-                href="#"
-                className="font-medium text-green-600 hover:text-green-500"
-              >
-                Forgot your password?
-              </a>
-            </div>
-          </div>
+          <div className="flex items-center justify-between"></div>
 
           <div>
             <button
@@ -121,13 +112,13 @@ export default function Login() {
                   />
                 </svg>
               </span>
-              Sign in
+              Logar
             </button>
           </div>
         </form>
         <div className="text-sm ">
           <a href="prevlab/admin/login" className="font-medium text-green-600 ">
-            Logar como administrador.
+            Entrar como administrador.
           </a>
         </div>
       </div>

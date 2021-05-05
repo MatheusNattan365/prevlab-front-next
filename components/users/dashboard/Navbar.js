@@ -5,15 +5,9 @@ import { useCookies } from "react-cookie";
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Profile as ProfileSVG } from "../../svgs";
-import { AdminDashboardContext } from "../../../context/adminContext";
+import { DashboardUsersContext } from "../../../context/userContext";
 
-const navigation = [
-  "Dashboard",
-  "Labs/Convênios",
-  "Pacientes",
-  "Exames",
-  "Relatórios",
-];
+const navigation = ["Dashboard"];
 const profile = ["Perfil", "Configurações", "Sair"];
 
 function classNames(...classes) {
@@ -23,7 +17,7 @@ function classNames(...classes) {
 function Navbar() {
   const router = useRouter();
   const [adminDashContext, setAdminDashContext] = React.useContext(
-    AdminDashboardContext
+    DashboardUsersContext
   );
   const [cookies, setCookie, removeCookie] = useCookies();
 

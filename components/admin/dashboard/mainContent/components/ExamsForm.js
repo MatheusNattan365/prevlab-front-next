@@ -3,7 +3,7 @@ import { useCookies } from "react-cookie";
 import PatientTable from "./tables/PatientsTable";
 import { prevlabAxiosInstace } from "../../../../../services/prevlabAxios";
 import LoadingBackdrop from "../../../../LoadingBackdrop";
-
+import Feedback from "../../../../FeedBack";
 function ExamsForm() {
   const [cookies] = useCookies();
   const [loading, setLoading] = React.useState(false);
@@ -13,7 +13,7 @@ function ExamsForm() {
     _id: "",
   });
   const [exam, setExam] = React.useState({
-    pacient_id: patient._id,
+    pacient_id: "",
     collectDate: "",
     avaliacaoDaAmostra: "",
     celulaNaoEpiteliais: "",
@@ -34,16 +34,77 @@ function ExamsForm() {
       fullName: "",
       _id: "",
     });
+    setExam({
+      pacient_id: "",
+      collectDate: "",
+      avaliacaoDaAmostra: "",
+      celulaNaoEpiteliais: "",
+      descamacaoDominante: "",
+      alteracoesCelulares: "",
+      celulasMetaplasicas: "",
+      celulasEndocervicais: "",
+      celulasEndometriais: "",
+      floraVaginal: "",
+      agentesEspecificos: "",
+      citolise: "",
+      conclusao: "",
+      observacoes: "",
+    });
   };
+  const [feedback, setFeedback] = React.useState({
+    open: false,
+    type: "success",
+    msg: "feedback",
+  });
+
   const saveExam = async () => {
+    setLoading(true);
+    const { userInfo } = cookies;
     if (!patient._id || !exam.conclusao || !exam.collectDate) {
       return;
     }
-    // const response = await prevlabAxiosInstace.
+    const response = await prevlabAxiosInstace.exams._postExam(userInfo, exam);
+    if (response.data.error) {
+      setLoading(false);
+      return setFeedback({
+        open: true,
+        type: "error",
+        msg: response.data.msg,
+      });
+    }
+    setFeedback({
+      open: true,
+      type: "success",
+      msg: response.data.msg,
+    });
+    resetFields();
+    setLoading(false);
   };
+
+  const checkExam = async () => {
+    const { userInfo } = cookies;
+    if (patient._id === "") {
+      return;
+    }
+    const response = await prevlabAxiosInstace.exams._getExam(
+      userInfo,
+      patient._id
+    );
+    console.log(response.data);
+    if (response.data === null || !response.data) {
+      return setExam({ ...exam, patient_id: patient._id });
+    }
+    setExam({ ...response.data });
+  };
+
+  React.useEffect(() => {
+    checkExam();
+  }, [patient._id]);
 
   return (
     <>
+      <Feedback obj={feedback} close={setFeedback} />
+      <LoadingBackdrop openClose={loading} />
       <PatientTable
         setPatient={setPatient}
         openBackdropTable={openBackdropTable}
@@ -127,7 +188,7 @@ function ExamsForm() {
                           })
                         }
                         list="avaliacaoAmostra"
-                        class="w-full border bg-white rounded px-3 py-2 h-10 outline-none"
+                        className="w-full border bg-white rounded px-3 py-2 h-10 outline-none"
                       />
                       <datalist id="avaliacaoAmostra">
                         <option value="Satisfatória" />
@@ -159,7 +220,7 @@ function ExamsForm() {
                           })
                         }
                         list="naoEpiteliais"
-                        class="w-full border bg-white rounded px-3 py-2 h-10 outline-none"
+                        className="w-full border bg-white rounded px-3 py-2 h-10 outline-none"
                       />
                       <datalist id="naoEpiteliais">
                         <option value="Pouquíssimos polimorfonucleares neutrófilos" />
@@ -193,7 +254,7 @@ function ExamsForm() {
                           })
                         }
                         list="descDominante"
-                        class="w-full border bg-white rounded px-3 py-2 h-10 outline-none"
+                        className="w-full border bg-white rounded px-3 py-2 h-10 outline-none"
                       />
                       <datalist id="descDominante">
                         <option value="Células superficiais e intermediárias" />
@@ -227,10 +288,11 @@ function ExamsForm() {
                           })
                         }
                         list="alteracoesCelulares"
-                        class="w-full border bg-white rounded px-3 py-2 h-10 outline-none"
+                        className="w-full border bg-white rounded px-3 py-2 h-10 outline-none"
                       />
                       <datalist id="alteracoesCelulares">
-                        <option value="xxxxxxxxxxxxx-xxxxxxxxxxxxx" />
+                        <option value="xxxxxxxxxxxxxxxxxxxxxxxxxxx" />
+                        <option value="Discretas atipias / discarioses em células" />
                       </datalist>
                     </div>
                   </div>
@@ -254,7 +316,7 @@ function ExamsForm() {
                           })
                         }
                         list="celulasMetaplasicas"
-                        class="w-full border bg-white rounded px-3 py-2 h-10 outline-none"
+                        className="w-full border bg-white rounded px-3 py-2 h-10 outline-none"
                       />
                       <datalist id="celulasMetaplasicas">
                         <option value="Ausentes" />
@@ -283,7 +345,7 @@ function ExamsForm() {
                           })
                         }
                         list="celulasEndocervicais"
-                        class="w-full border bg-white rounded px-3 py-2 h-10 outline-none"
+                        className="w-full border bg-white rounded px-3 py-2 h-10 outline-none"
                       />
                       <datalist id="celulasEndocervicais">
                         <option value="Reativas" />
@@ -315,7 +377,7 @@ function ExamsForm() {
                           })
                         }
                         list="celulasEndometriais"
-                        class="w-full border bg-white rounded px-3 py-2 h-10 outline-none"
+                        className="w-full border bg-white rounded px-3 py-2 h-10 outline-none"
                       />
                       <datalist id="celulasEndometriais">
                         <option value="Ausentes" />
@@ -332,8 +394,8 @@ function ExamsForm() {
                     </label>
                     <div className="mt-1 flex rounded-md shadow-sm ">
                       <input
-                        name={`company_flora`}
-                        id={`company_flora`}
+                        name={`company_especificos`}
+                        id={`company_floraVaginal`}
                         value={exam.floraVaginal}
                         onChange={(evt) =>
                           setExam({
@@ -342,16 +404,18 @@ function ExamsForm() {
                           })
                         }
                         list="floraVaginal"
-                        class="w-full border bg-white rounded px-3 py-2 h-10 outline-none"
+                        className="w-full border bg-white rounded px-3 py-2 h-10 outline-none"
                       />
                       <datalist id="floraVaginal">
+                        <option value="Flora não visualizada " />
                         <option value="Lactobacilos" />
                         <option value="Bacilos" />
                         <option value="Cocos" />
                         <option value="Lactobacilos e bacilos" />
-                        <option value="Bacilos e cocos" />
                         <option value="Lactobacilos e cocos" />
-                        <option value="Fungos morfologicamente com cândida sp" />
+                        <option value="Cocos e bacilos" />
+                        <option value="Lactobacilos;Fungos morfologicamente consistentes com cândida sp" />
+                        <option value="Fungos morfologicamente consistentes com cândida sp" />
                         <option value="Organismos semelhantes a Trichomonas Vaginalis" />
                         <option value="Bacilos supracitoplasmáticos sugestivos de Gardnerella vaginalis" />
                       </datalist>
@@ -363,7 +427,7 @@ function ExamsForm() {
                       htmlFor="company_website"
                       className="block text-sm font-medium text-gray-700"
                     >
-                      Flora vaginal:
+                      Agentes específicos:
                     </label>
                     <div className="mt-1 flex rounded-md shadow-sm ">
                       <input
@@ -377,7 +441,7 @@ function ExamsForm() {
                           })
                         }
                         list="agentesEspecificos"
-                        class="w-full border bg-white rounded px-3 py-2 h-10 outline-none"
+                        className="w-full border bg-white rounded px-3 py-2 h-10 outline-none"
                       />
                       <datalist id="agentesEspecificos">
                         <option value="Não visualizados" />
@@ -405,7 +469,7 @@ function ExamsForm() {
                           })
                         }
                         list="citolise"
-                        class="w-full border bg-white rounded px-3 py-2 h-10 outline-none"
+                        className="w-full border bg-white rounded px-3 py-2 h-10 outline-none"
                       />
                       <datalist id="citolise">
                         <option value="Citolise leve" />
@@ -434,7 +498,7 @@ function ExamsForm() {
                           })
                         }
                         list="conclusao"
-                        class="w-full border bg-white rounded px-3 py-2 h-10 outline-none"
+                        className="w-full border bg-white rounded px-3 py-2 h-10 outline-none"
                       />
                       <datalist id="conclusao">
                         <option value="Negativo para lesão intra-epitelial ou malignidade no material examinado (Bethesda 2014)" />
@@ -465,7 +529,7 @@ function ExamsForm() {
                           })
                         }
                         list="observacoes"
-                        class="w-full border bg-white rounded px-3 py-2 h-10 outline-none"
+                        className="w-full border bg-white rounded px-3 py-2 h-10 outline-none"
                       />
                       <datalist id="observacoes">
                         <option value="Obs: Sugere-se acompanhamento do processo metaplásico" />

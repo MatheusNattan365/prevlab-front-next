@@ -23,6 +23,7 @@ function Header() {
         return <AdminExams />;
       case "Relatórios":
         return <AdminReports />;
+
       default:
         break;
     }

@@ -13,6 +13,17 @@ export const prevlabAxiosInstace = {
         console.log(error);
       }
     },
+    _adminLogin: async (email, password) => {
+      try {
+        const loginResponse = await axios.post("/public/auth/adminlogin", {
+          email,
+          password,
+        });
+        return loginResponse;
+      } catch (error) {
+        console.log(error);
+      }
+    },
   },
   labs: {
     _getLabs: async (userToken) => {
@@ -126,8 +137,10 @@ export const prevlabAxiosInstace = {
   },
   exams: {
     _postExam: async (userToken, exam) => {
-      const getPatientsResponse = await axios.post(
-        "/private/admin/app/exams/newexam",
+      const { _id } = exam;
+      console.log(exam);
+      const getPatientsResponse = await axios[!_id ? "post" : "put"](
+        `/private/admin/app/exams/${!_id ? "newexam" : `${_id}/updateexam`}`,
         {
           ...exam,
         },
@@ -139,6 +152,47 @@ export const prevlabAxiosInstace = {
       );
       console.log(getPatientsResponse);
       return getPatientsResponse;
+    },
+    _getExam: async (userToken, pacient_id) => {
+      const getPatientsResponse = await axios.get(
+        `/private/admin/app/exams/all/${pacient_id}`,
+        {
+          headers: {
+            Authorization: userToken,
+          },
+        }
+      );
+      console.log(getPatientsResponse);
+      return getPatientsResponse;
+    },
+  },
+  users: {
+    _getPatientsAlloweds: async (userToken) => {
+      try {
+        const getAllowedsResponse = await axios.get(`/public/app/alloweds`, {
+          headers: {
+            Authorization: userToken,
+          },
+        });
+        console.log(getAllowedsResponse);
+        return getAllowedsResponse;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    _getExam: async (userToken, patient_id) => {
+      try {
+        const getAllowedsResponse = await axios.get(
+          `/public/app/exam?_id=${patient_id}`,
+          {
+            headers: {
+              Authorization: userToken,
+            },
+          }
+        );
+        console.log(getAllowedsResponse);
+        return getAllowedsResponse;
+      } catch (error) {}
     },
   },
 };

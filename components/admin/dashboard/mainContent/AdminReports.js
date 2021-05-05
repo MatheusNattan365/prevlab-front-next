@@ -1,9 +1,9 @@
 import React from "react";
 
-// import { Container } from './styles';
+import ReportTable from "./components/tables/ReportTable";
 
 function AdminReports() {
-  return <div>Reports</div>;
+  return <ReportTable />;
 }
 
 export default AdminReports;

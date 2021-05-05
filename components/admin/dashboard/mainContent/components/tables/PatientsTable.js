@@ -21,7 +21,7 @@ function PatientTable({ setPatient, openBackdropTable, setOpenBackdropTable }) {
   const getPatients = async () => {
     const { userInfo } = cookies;
     const response = await prevlabAxiosInstace.patients._getPatients(userInfo);
-    if (!response.data) {
+    if (response.data === null || !response.data) {
       return;
     }
     setPatients(response.data);

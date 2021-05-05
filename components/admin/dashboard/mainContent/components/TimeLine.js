@@ -9,9 +9,8 @@ function TimeLine() {
         className="border-2-2 absolute border-opacity-20 border-gray-700 h-full border"
         style={{ left: "50%" }}
       /> */}
-
       {/* <!-- r/l timeline --> */}
-      {[2, 2, 3, 3, 3, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16].map((el) =>
+      {/* {[2, 2, 3, 3, 3, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16].map((el) =>
         el % 2 === 0 ? (
           <div className="mb-8 flex justify-between items-center w-full right-timeline ">
             <div className="order-1 w-5/12 "></div>
@@ -53,9 +52,8 @@ function TimeLine() {
                 of type and scrambled it to make a type specimen book.
               </p>
             </div>
-          </div>
-        )
-      )}
+          </div> */}
+      {/* ) )} */}
     </div>
   );
 }

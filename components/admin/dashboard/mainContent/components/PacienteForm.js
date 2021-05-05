@@ -3,10 +3,12 @@ import { useCookies } from "react-cookie";
 import PatientTable from "./tables/PatientsTable";
 import { prevlabAxiosInstace } from "../../../../../services/prevlabAxios";
 import LoadingBackdrop from "../../../../LoadingBackdrop";
+import FeedBack from "../../../../FeedBack";
 function PacientForm() {
   const [cookies] = useCookies();
   const [loading, setLoading] = React.useState(false);
   const [openBackdropTable, setOpenBackdropTable] = React.useState(false);
+  const [convenio, setConvenios] = React.useState([]);
   const [patient, setPatient] = React.useState({
     fullName: "",
     age: 0,
@@ -14,8 +16,11 @@ function PacientForm() {
     convenio: "",
     bornDate: "",
   });
-
-  const [convenios, setConvenios] = React.useState([]);
+  const [feedback, setFeedback] = React.useState({
+    open: false,
+    type: "success",
+    msg: "feedback",
+  });
 
   const resetFields = () => {
     setPatient({
@@ -34,7 +39,8 @@ function PacientForm() {
     if (!response.data) {
       return;
     }
-    setConvenios(response.data);
+    let convenios = response.data.map((el) => el.convenio);
+    setConvenios(convenios);
   };
 
   const savePatient = async () => {
@@ -49,6 +55,18 @@ function PacientForm() {
     ](userInfo, patient);
     resetFields();
     setLoading(false);
+    if (response.data.error) {
+      setFeedback({
+        open: true,
+        type: "error",
+        msg: response.data.msg,
+      });
+    }
+    setFeedback({
+      open: true,
+      type: "success",
+      msg: response.data.msg,
+    });
   };
   const deletePatient = async () => {
     setLoading(true);
@@ -60,6 +78,18 @@ function PacientForm() {
     );
     resetFields();
     setLoading(false);
+    if (response.data.error) {
+      setFeedback({
+        open: true,
+        type: "error",
+        msg: response.data.msg,
+      });
+    }
+    setFeedback({
+      open: true,
+      type: "success",
+      msg: response.data.msg,
+    });
   };
 
   React.useEffect(() => {
@@ -68,6 +98,7 @@ function PacientForm() {
 
   return (
     <>
+      <FeedBack obj={feedback} close={setFeedback} />
       <LoadingBackdrop openClose={loading} />
       <PatientTable
         setPatient={setPatient}
@@ -217,8 +248,11 @@ function PacientForm() {
                         placeholder="..."
                       >
                         <option value="PARTICULAR">PARTICULAR</option>
-                        {convenios.map((el) => (
-                          <option value={el.name}>{`${el.name}`}</option>
+                        {convenio.map((el) => (
+                          <option
+                            key={el + Math.random().toString()}
+                            value={el}
+                          >{`${el}`}</option>
                         ))}
                       </select>
                     </div>
