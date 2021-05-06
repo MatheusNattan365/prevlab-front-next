@@ -7,7 +7,7 @@ function About() {
   return (
     <Grid
       container
-      className="flex flex-col py-36 px-4 sm:px-6 lg:px-8 bg-green-600 box-border  "
+      className="flex flex-col py-60 px-4 sm:px-6 lg:px-8 bg-green-600 box-border  "
     >
       <div className=" flex-1 flex  flex-col justify-center   max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 sel">
         <h2 className="text-7xl text-white font-semibold tracking-wide ">
