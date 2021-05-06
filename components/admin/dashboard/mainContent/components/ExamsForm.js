@@ -226,10 +226,11 @@ function ExamsForm() {
                         <option value="Pouquíssimos polimorfonucleares neutrófilos" />
                         <option value="Poucos polimorfonucleares neutrófilos" />
                         <option value="Poucos polimorfonucleares neutrófilos e histiócitos" />
+                        <option value="Moderados polimorfonucleares neutrófilos" />
                         <option value="Moderados polimorfonucleares neutrófilos e histiócitos" />
-                        <option value="Moderados polimorfonucleares neutrófilos e histiócitos" />
+                        <option value="Muitos polimorfonucleares neutrófilos" />
                         <option value="Muitos polimorfonucleares neutrófilos e histiócitos" />
-                        <option value="Muitos polimorfonucleares neutrófilos e histiócitos" />
+                        <option value="Frequentes polimorfonucleares neutrófilos" />
                         <option value="Frequentes polimorfonucleares neutrófilos e histiócitos" />
                       </datalist>
                     </div>
@@ -350,7 +351,6 @@ function ExamsForm() {
                       <datalist id="celulasEndocervicais">
                         <option value="Reativas" />
                         <option value="Ausentes" />
-                        <option value="Típicas" />
                         <option value="Típicas" />
                         <option value="Atípicas" />
                         <option value="Não visualizada" />

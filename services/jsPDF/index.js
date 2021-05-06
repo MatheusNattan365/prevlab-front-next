@@ -285,18 +285,12 @@ export const JSPDF = {
 
     doc.setFontSize(10);
     doc.setFont("courier", "bold");
-    doc.text(`CITÓLISE:`, 15, 193);
+    doc.text(`CONCLUSÃO:`, 15, 193);
     doc.setFont("courier", "normal");
     doc.setFontSize(8);
     doc.text(exam.citolise, 15, 197);
-
-    doc.setFontSize(10);
-    doc.setFont("courier", "bold");
-    doc.text(`CONCLUSÃO:`, 15, 205);
-    doc.setFont("courier", "normal");
-    doc.setFontSize(8);
-    doc.text(exam.conclusao, 15, 209);
-    doc.text(exam.observacoes, 15, exam.conclusao ? 213 : 209);
+    doc.text(exam.conclusao, 15, exam.citolise ? 201 : 197);
+    doc.text(exam.observacoes, 15, exam.citolise ? 205 : 201);
 
     doc.setFontSize(8);
     doc.text(`Dra. ANA KARLA LUCAS DE OLIVEIRA`, 25, 238);

@@ -1,6 +1,6 @@
 import React from "react";
 import Head from "next/head";
-
+import { Grid } from "@material-ui/core";
 import Login from "../components/Login";
 import About from "../components/About";
 
@@ -12,14 +12,14 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <div className={`flex `}>
-          <div className="flex-auto">
-            <About />
-          </div>
-          <div className="flex-auto">
+        <Grid container direction="row" justify="center" alignItems="stretch">
+          <Grid item xs={12} sm={12} md={6} lg={8} xl={8}>
             <Login />
-          </div>
-        </div>
+          </Grid>
+          <Grid item xs={12} sm={12} md={6} lg={4} xl={4}>
+            <About />
+          </Grid>
+        </Grid>
       </main>
     </div>
   );
