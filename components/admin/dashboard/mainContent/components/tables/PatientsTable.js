@@ -58,6 +58,14 @@ function PatientTable({ setPatient, openBackdropTable, setOpenBackdropTable }) {
             setPatient(selectedRow);
             setOpenBackdropTable(false);
           }}
+          actions={[
+            {
+              icon: tableIcons.Close,
+              tooltip: "Add User",
+              isFreeAction: true,
+              onClick: () => setOpenBackdropTable(false),
+            },
+          ]}
         />
       </Container>
     </Backdrop>
