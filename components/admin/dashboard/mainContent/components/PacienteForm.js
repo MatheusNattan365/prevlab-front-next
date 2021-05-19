@@ -182,7 +182,11 @@ function PacientForm() {
                           type="date"
                           name={`company_date`}
                           id={`company_date`}
-                          value={patient.bornDate.split("T")[0]}
+                          value={
+                            patient.bornDate
+                              ? patient.bornDate.split("T")[0]
+                              : patient.bornDate
+                          }
                           onChange={(evt) => {
                             const currentDate = new Date();
                             const age =
